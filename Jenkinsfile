@@ -61,30 +61,30 @@ pipeline {
                     ]) {
 
                         echo "Triggering CircleCI Custom Pipeline with TAG_VERSION=${TAG_VERSION}"
-
+                        def payload = """
+                        {
+                          "definition_id": "${DEFINITION_ID}",
+                          "parameters": {
+                            "tag": "${TAG_VERSION}"
+                          },
+                          "config": {
+                            "branch": "main"
+                          },
+                          "checkout": {
+                            "branch": "main"
+                          }
+                        }
+                        """
                         sh """
                         curl --location 'https://circleci.com/api/v2/project/${PROJECT_SLUG}/pipeline/run' \
                         --header 'Circle-Token: ${CIRCLECI_TOKEN}' \
                         --header 'Content-Type: application/json' \
-                        --data '{
-                            "definition_id": ${DEFINITION_ID},
-                            "parameters": {
-                                "tag": "${TAG_VERSION}"
-                            },
-                            "config": {
-                                "branch": "main"
-                            },
-                            "checkout": {
-                                "branch": "main"
-                            }
-                        }'
+                        --data '${payload.replaceAll("\\n", "").replaceAll("\\s{2,}", " ")}'
                         """
                     }
                 }
             }
         }
-
-
 
         stage('Select Deployment Color') {
             steps {
