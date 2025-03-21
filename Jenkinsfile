@@ -61,7 +61,7 @@ pipeline {
                         echo "Triggering CircleCI pipeline with TAG_VERSION=${TAG_VERSION}"
 
                         sh '''
-                        curl --location --request POST 'https://circleci.com/api/v2/project/github/bdt6246/jenkins_test/pipeline' \
+                        curl --location --request POST 'https://circleci.com/api/v2/project/circleci/4JLeNKhG2TrWajvci56PeB/UfMTWLgDF6Q6L58e2omnSn/pipeline/run' \
                         --header "Circle-Token: ${CIRCLECI_TOKEN}" \
                         --header 'Content-Type: application/json' \
                         --data '{
