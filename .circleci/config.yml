@@ -45,7 +45,7 @@
     version: 2
     build-and-deploy:
       jobs:
-        - gradle-build:
+        - gradle-build
         - docker-build-and-push:
             requires:
               - gradle-build
