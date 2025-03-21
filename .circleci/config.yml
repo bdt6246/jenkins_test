@@ -19,6 +19,9 @@
               - build/libs/*.jar
 
     docker-build-and-push:
+      parameters:
+        tag:
+          type: string
       docker:
         - image: cimg/base:2022.09
           auth:
