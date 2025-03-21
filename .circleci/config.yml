@@ -18,8 +18,7 @@ jobs:
           root: .
           paths:
             - build/libs/*.jar
-workflow:
-  version: 2
-  build-and-deploy:
+workflows:
+  build-and-test:
     jobs:
-      gradle-build
+      - gradle-build
