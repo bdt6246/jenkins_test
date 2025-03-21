@@ -60,21 +60,22 @@ pipeline {
 
                         echo "Triggering CircleCI pipeline with TAG_VERSION=${TAG_VERSION}"
 
-                        sh """
+                        sh '''
                         curl --location --request POST 'https://circleci.com/api/v2/project/github/bdt6246/jenkins_test/pipeline' \
-                        --header 'Circle-Token: ${CIRCLECI_TOKEN}' \
+                        --header "Circle-Token: ${CIRCLECI_TOKEN}" \
                         --header 'Content-Type: application/json' \
                         --data '{
                             "branch": "main",
                             "parameters": {
-                                "tag": "${TAG_VERSION}"
+                                "tag": "'"${TAG_VERSION}"'"
                             }
                         }'
-                        """
+                        '''
                     }
                 }
             }
         }
+
 
         stage('Select Deployment Color') {
             steps {
