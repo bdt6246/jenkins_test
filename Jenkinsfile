@@ -76,7 +76,7 @@ pipeline {
                         }
                         """
                         sh """
-                        curl --location --request POST 'https://circleci.com/api/v2/project/github/bdt6246/jenkins_test/pipeline' \
+                        curl --location 'https://circleci.com/api/v2/project/${PROJECT_SLUG}/pipeline/run' \
                         --header 'Circle-Token: ${CIRCLECI_TOKEN}' \
                         --header 'Content-Type: application/json' \
                         --data '${payload.replaceAll("\\n", "").replaceAll("\\s{2,}", " ")}'
