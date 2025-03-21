@@ -50,26 +50,28 @@ pipeline {
 //         }
 
         stage('Circle CI API') {
-            steps{
+            steps {
                 script {
                     def TAG_VERSION = "0.1.${BUILD_NUMBER}"
-                    echo "Cloning Repository"
 
-                    sh '''
-                     curl --location --request POST 'https://circleci.com/api/v2/project/github/bdt6246/jenkins_test/pipeline' \
+                    withCredentials([
+                        string(credentialsId: 'Circle-Token', variable: 'CIRCLECI_TOKEN')
+                    ]) {
 
-                    --header 'Circle-Token: [api-token]' \
-                    --header 'Content-Type: application/json' \
-                    --data '{
-                        "definition_id": "[definition_id]",
-                        "parameters": {
-                            "tag": "${TAG_VERSION}"
-                        }
-                        "config": {
-                            "branch": "main"
-                        }
-                    }'
-                    '''
+                        echo "Triggering CircleCI pipeline with TAG_VERSION=${TAG_VERSION}"
+
+                        sh """
+                        curl --location --request POST 'https://circleci.com/api/v2/project/github/bdt6246/jenkins_test/pipeline' \
+                        --header 'Circle-Token: ${CIRCLECI_TOKEN}' \
+                        --header 'Content-Type: application/json' \
+                        --data '{
+                            "branch": "main",
+                            "parameters": {
+                                "tag": "${TAG_VERSION}"
+                            }
+                        }'
+                        """
+                    }
                 }
             }
         }
