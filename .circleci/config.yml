@@ -55,4 +55,5 @@
         - docker-build-and-push:
             requires:
               - gradle-build
-            tag: << pipeline.parameters.tag >>  # Jenkins에서 넘긴 값 전달
+            parameters:
+              tag: << pipeline.parameters.tag >>  # Jenkins에서 넘긴 값 전달
