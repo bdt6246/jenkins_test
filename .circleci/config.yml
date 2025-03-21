@@ -50,7 +50,15 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - gradle-build
+      - gradle-build:
+          filters:
+            branches:
+              only:
+                - circleci-project-setup
       - docker-build-and-push:
           requires:
             - gradle-build
+          filters:
+            branches:
+              only:
+                - circleci-project-setup
