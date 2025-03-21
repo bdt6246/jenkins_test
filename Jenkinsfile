@@ -52,29 +52,38 @@ pipeline {
         stage('Circle CI API') {
             steps {
                 script {
-                    def TAG_VERSION = "0.1.${BUILD_NUMBER}"
+                    def TAG_VERSION = "v${BUILD_NUMBER}"
 
                     withCredentials([
-                        string(credentialsId: 'Circle-Token', variable: 'CIRCLECI_TOKEN')
+                        string(credentialsId: 'Circle-Token', variable: 'CIRCLECI_TOKEN'),
+                        string(credentialsId: 'project_slug', variable: 'PROJECT_SLUG'),
+                        string(credentialsId: 'definition_id', variable: 'DEFINITION_ID')
                     ]) {
 
-                        echo "Triggering CircleCI pipeline with TAG_VERSION=${TAG_VERSION}"
+                        echo "Triggering CircleCI Custom Pipeline with TAG_VERSION=${TAG_VERSION}"
 
-                        sh '''
-                        curl --location --request POST 'https://circleci.com/api/v2/project/circleci/4JLeNKhG2TrWajvci56PeB/UfMTWLgDF6Q6L58e2omnSn/pipeline/run' \
-                        --header "Circle-Token: ${CIRCLECI_TOKEN}" \
+                        sh """
+                        curl --location 'https://circleci.com/api/v2/project/${PROJECT_SLUG}/pipeline/run' \
+                        --header 'Circle-Token: ${CIRCLECI_TOKEN}' \
                         --header 'Content-Type: application/json' \
                         --data '{
-                            "branch": "main",
+                            "definition_id": ${DEFINITION_ID},
                             "parameters": {
-                                "tag": "'"${TAG_VERSION}"'"
+                                "tag": "${TAG_VERSION}"
+                            },
+                            "config": {
+                                "branch": "main"
+                            },
+                            "checkout": {
+                                "branch": "main"
                             }
                         }'
-                        '''
+                        """
                     }
                 }
             }
         }
+
 
 
         stage('Select Deployment Color') {
