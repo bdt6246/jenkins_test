@@ -68,10 +68,10 @@ pipeline {
                             "tag": "${TAG_VERSION}"
                           },
                           "config": {
-                            "branch": "main"
+                            "branch": "circle-project-setup"
                           },
                           "checkout": {
-                            "branch": "main"
+                            "branch": "circle-project-setup"
                           }
                         }
                         """
