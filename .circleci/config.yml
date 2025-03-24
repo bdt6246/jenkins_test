@@ -47,12 +47,6 @@ jobs:
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             docker push $DOCKERHUB_USERNAME/backend:<< pipeline.parameters.tag >>
 
-      - run:
-          name: Notify Jenkins to Deploy
-          command: |
-            curl -X POST 'http://<JENKINS_URL>/job/<JOB_NAME>/buildWithParameters' \
-              --user '<JENKINS_USER>:<JENKINS_API_TOKEN>' \
-
 workflows:
   version: 2
   build-and-deploy:
